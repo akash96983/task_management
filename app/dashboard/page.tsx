@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_URL } from '@/lib/config';
 
 interface Task {
   id: number;
@@ -56,7 +57,7 @@ export default function DashboardPage() {
   const fetchTasks = async () => {
     try {
       const token = localStorage.getItem('token');
-      let url = `http://localhost:8000/api/tasks?sort_by=${sortBy}`;
+      let url = `${API_URL}/api/tasks?sort_by=${sortBy}`;
       
       if (filterStatus !== 'all') {
         url += `&status=${filterStatus === 'completed'}`;
@@ -87,7 +88,7 @@ export default function DashboardPage() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/api/tasks', {
+      const response = await fetch(`${API_URL}/api/tasks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -112,7 +113,7 @@ export default function DashboardPage() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8000/api/tasks/${selectedTask.id}`, {
+      const response = await fetch(`${API_URL}/api/tasks/${selectedTask.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -135,7 +136,7 @@ export default function DashboardPage() {
   const handleToggleStatus = async (taskId: number) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8000/api/tasks/${taskId}/toggle`, {
+      const response = await fetch(`${API_URL}/api/tasks/${taskId}/toggle`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -155,7 +156,7 @@ export default function DashboardPage() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8000/api/tasks/${taskId}`, {
+      const response = await fetch(`${API_URL}/api/tasks/${taskId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

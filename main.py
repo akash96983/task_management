@@ -25,9 +25,20 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 # CORS middleware to allow Next.js frontend to connect
+# Add your Vercel deployment URL to allow_origins
+allowed_origins = [
+    "http://localhost:3000",  # Local development
+    "https://*.vercel.app",   # Vercel deployments (update with your actual URL)
+]
+
+# Get additional origins from environment variable (optional)
+frontend_url = os.getenv("FRONTEND_URL")
+if frontend_url:
+    allowed_origins.append(frontend_url)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Next.js default port
+    allow_origins=["*"],  # Allow all origins (change to specific domains in production)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
